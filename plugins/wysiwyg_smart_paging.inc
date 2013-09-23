@@ -17,7 +17,7 @@ function wysiwyg_smart_paging_wysiwyg_smart_paging_plugin() {
     'css file' => 'wysiwyg_smart_paging.css',
     'settings'   => array(
       'smart_paging_path' => drupal_get_path('module', 'smart_paging'),
-      'form_markup' => drupal_render(wysiwyg_smart_paging_form()),
+      'form_markup' => drupal_render(_wysiwyg_smart_paging_form()),
       'icon_markup' => array(
         'prefix' => '<span class="wysiwyg-sp">',
         'src' => '<img src="' .

@@ -23,51 +23,19 @@ function wysiwyg_smart_paging_page_alter(&$page) {
           '/wysiwyg_smart_paging.css');
 }
 
-function wysiwyg_smart_paging_form() {
-  if (!module_exists('metatag')) {
-    $tags = array(
-      'global' => array(
-        'title', 'description', 'abstract', 'keywords',
-      ),
-      'open-graph' => array(
-        'fb:admins', 'fb:app_id', 'og:title', 'og:description',
-        'og:image', 'og:url', 'og:latitude', 'og:longitude',
-        'og:street-address', 'og:locality', 'og:region', 'og:postal-code',
-        'og:country-name', 'og:email', 'og:phone_number', 'og:fax_number',
-        'og:video', 'og:video:secure_url', 'og:video:width', 'og:video:height',
-      ),
-      'advanced' => array(
-        'news_keywords', 'copyright', 'image_src',
-        'canonical', 'shortlink', 'publisher', 'author',
-        'original-source_content',
-      ),
-    );
-        
-    $form = array();
-    $weight = 0;
-    foreach ($tags as $group_name => $group) {
-      $form[$group_name] = array(
-        '#type' => 'fieldset',
-        '#title' => ucfirst($group_name),
-        '#collapsible' => TRUE,
-        '#collapsed' => ($group_name != 'global') ? TRUE : FALSE,
-        '#weight' => $weight,
-      );
-      foreach ($group as $tag) {
-        $form[$group_name][$tag] = array(
-          '#type' => 'textfield',
-          '#name' => 'meta_name_' . $tag . '_content',
-          '#title' => $tag,
-          '#size' => 70,
-        );
-      }
-      $weight++;
-    }
+/**
+ * Helper that returns metatags form or a custom form.
+ */
+function _wysiwyg_smart_paging_form() {
+  $form = array();
+  if (module_exists('metatag')) {
+  	$form = wysiwyg_smart_paging_metatag_form();  
   }
   else {
-    $form = wysiwyg_smart_paging_metatag_form();
+    $form = drupal_get_form('wysiwyg_smart_paging_form');
   }
   
+  // Modify the form.
   $form['#prefix'] = '<div class="wysiwyg-sp-popup">' . '<h2>Edit Metatag</h2>';
   $form['#suffix'] = '</div>';
     
@@ -86,6 +54,53 @@ function wysiwyg_smart_paging_form() {
     '#attributes' => array('class' => array('cancel'),
       'onclick' => 'return (false);'),
   );
+
+  return $form;
+}
+
+/**
+ * Implements hook_form().
+ */
+function wysiwyg_smart_paging_form() {
+  $tags = array(
+    'global' => array(
+      'title', 'description', 'abstract', 'keywords',
+    ),
+    'open-graph' => array(
+      'fb:admins', 'fb:app_id', 'og:title', 'og:description',
+      'og:image', 'og:url', 'og:latitude', 'og:longitude',
+      'og:street-address', 'og:locality', 'og:region', 'og:postal-code',
+      'og:country-name', 'og:email', 'og:phone_number', 'og:fax_number',
+      'og:video', 'og:video:secure_url', 'og:video:width', 'og:video:height',
+    ),
+    'advanced' => array(
+      'news_keywords', 'copyright', 'image_src',
+      'canonical', 'shortlink', 'publisher', 'author',
+      'original-source_content',
+    ),
+  );
+        
+  $form = array();
+  $weight = 0;
+  foreach ($tags as $group_name => $group) {
+    $form[$group_name] = array(
+      '#type' => 'fieldset',
+      '#title' => ucfirst($group_name),
+      '#collapsible' => TRUE,
+      '#collapsed' => ($group_name != 'global') ? TRUE : FALSE,
+      '#weight' => $weight,
+    );
+    foreach ($group as $tag) {
+      $form[$group_name][$tag] = array(
+        '#type' => 'textfield',
+        '#name' => 'meta_name_' . $tag . '_content',
+        '#title' => $tag,
+        '#size' => 60,
+        //'#attributes' => array('class' => 'fluid'),
+      );
+    }
+    $weight++;
+  }
 
   return $form;
 }

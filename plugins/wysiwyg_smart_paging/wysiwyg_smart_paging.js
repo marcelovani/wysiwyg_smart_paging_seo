@@ -123,6 +123,10 @@
       // Display popup centered on screen.
       jQuery(".wysiwyg-sp-popup").center().show(function() {
 
+        jQuery(".wysiwyg-sp-popup form fieldset legend").click(function() {
+          $(this).parent().toggleClass('collapsed');
+        });
+
         // Listeners for buttons.
         jQuery(".wysiwyg-sp-popup .insert").click(function() {
           // Get key/values from the form.
