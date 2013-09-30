@@ -1,5 +1,5 @@
 /* CSS for admin interface and front-end */
-.wysiwyg-sp-popup {
+.wysiwyg-sp-seo-popup {
   background-color: #ffffff;
   border: 2px solid #999999;
   cursor: default;
@@ -9,13 +9,13 @@
   width: 800px;
   z-index: 200;
 }
-.wysiwyg-sp {
+.wysiwyg-sp-seo {
   display: block;
   position: relative;
   z-index: 100;
   padding-bottom: 5px;
 }
-.wysiwyg-sp img {
+.wysiwyg-sp-seo img {
   position: absolute;
   top: -15px;
 }

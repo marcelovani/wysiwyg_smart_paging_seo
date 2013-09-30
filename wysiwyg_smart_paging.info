@@ -1,6 +1,0 @@
-name = Wysiwyg Smart Paging
-description = Plugin to add individual Metatags per page.
-package = User interface
-core = 7.x
-dependencies[] = smart_paging
-dependencies[] = wysiwyg

@@ -1,0 +1,6 @@
+name = Wysiwyg Smart Paging SEO
+description = Plugin to add individual SEO Metatags per page.
+package = User interface
+core = 7.x
+dependencies[] = smart_paging
+dependencies[] = wysiwyg
