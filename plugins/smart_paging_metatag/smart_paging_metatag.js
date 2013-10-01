@@ -1,11 +1,11 @@
 (function ($) {
-  Drupal.wysiwyg.plugins['wysiwyg_smart_paging_seo'] = {
+  Drupal.wysiwyg.plugins['smart_paging_metatag'] = {
     
     /**
      * Return whether the passed node belongs to this plugin.
      */
     isNode: function(node) {
-      return $(node).is('.wysiwyg-sp-seo-img');
+      return $(node).is('.wysiwyg-sp-metatag-img');
     },
 
     /**
@@ -56,7 +56,7 @@
           settings.data_id = metatag_data.data_id;
           
           // Store data.
-          Drupal.wysiwyg.plugins['wysiwyg_smart_paging_seo'].data[settings.data_id] = metatag_data;
+          Drupal.wysiwyg.plugins['smart_paging_metatag'].data[settings.data_id] = metatag_data;
           
           // Replace markup with image.
           content = content.replace(data_id_array[i], this._getImgPlaceholder(settings));
@@ -80,7 +80,7 @@
           settings.data_id = data_id;
           
           // Generate markup using data from storage.
-          var markup = JSON.stringify(Drupal.wysiwyg.plugins['wysiwyg_smart_paging_seo'].data[settings.data_id]);
+          var markup = JSON.stringify(Drupal.wysiwyg.plugins['smart_paging_metatag'].data[settings.data_id]);
           
           // Replace image with markup.
           content = content.replace(data_id_array[i], 
@@ -100,7 +100,7 @@
       }
 
       // Check if the Form is not yet on the DOM.
-      if ($('.wysiwyg-sp-seo-popup').length == 0) {
+      if ($('.wysiwyg-sp-metatag-popup').length == 0) {
         // Print the form on the page.
         // Normalize the field names.
         form = settings.form_markup.replace(new RegExp('metatags\\[([\\w|:|-]+)\\]\\[value\\]', 'gi'), 'meta_name_$1_content');
@@ -112,28 +112,28 @@
         if (settings.mode == "Edit") {
           // Fill in the form values with json data.
 
-          var metatags = Drupal.wysiwyg.plugins['wysiwyg_smart_paging_seo'].data[settings.data_id];
+          var metatags = Drupal.wysiwyg.plugins['smart_paging_metatag'].data[settings.data_id];
 
           jQuery.each(metatags, function(name, value) {
-            jQuery('.wysiwyg-sp-seo-popup [name=' + name + ']').val(value);
+            jQuery('.wysiwyg-sp-metatag-popup [name=' + name + ']').val(value);
           });
         }
       }
 
       // Display popup centered on screen.
-      jQuery(".wysiwyg-sp-seo-popup").center().show(function() {
+      jQuery(".wysiwyg-sp-metatag-popup").center().show(function() {
 
-        jQuery(".wysiwyg-sp-seo-popup form fieldset legend").click(function() {
+        jQuery(".wysiwyg-sp-metatag-popup form fieldset legend").click(function() {
           $(this).parent().toggleClass('collapsed');
         });
 
         // Listeners for buttons.
-        jQuery(".wysiwyg-sp-seo-popup .insert").click(function() {
+        jQuery(".wysiwyg-sp-metatag-popup .insert").click(function() {
           // Get key/values from the form.
-          var metatags = Drupal.wysiwyg.plugins['wysiwyg_smart_paging_seo']._getFormValues(settings);
+          var metatags = Drupal.wysiwyg.plugins['smart_paging_metatag']._getFormValues(settings);
 
           // Store the metatags.
-          Drupal.wysiwyg.plugins['wysiwyg_smart_paging_seo'].data[settings.data_id] = metatags;
+          Drupal.wysiwyg.plugins['smart_paging_metatag'].data[settings.data_id] = metatags;
 
           // Insert the placeholder image.
           if (settings.mode == "Add") {
@@ -141,19 +141,19 @@
           }
           
           // Close popup.
-          jQuery(".wysiwyg-sp-seo-popup").remove();
+          jQuery(".wysiwyg-sp-metatag-popup").remove();
         });
-        jQuery(".wysiwyg-sp-seo-popup .cancel").click(function() {
-          jQuery(".wysiwyg-sp-seo-popup").remove();
+        jQuery(".wysiwyg-sp-metatag-popup .cancel").click(function() {
+          jQuery(".wysiwyg-sp-metatag-popup").remove();
         });
         // Catch keyboard events.
         jQuery(document).keydown(function(e) {
           // Esc key pressed.
           if (e.keyCode == 27) {
-            jQuery(".wysiwyg-sp-seo-popup").remove();
+            jQuery(".wysiwyg-sp-metatag-popup").remove();
           }
         });
-        jQuery(".wysiwyg-sp-seo-popup *:input[type!=hidden]:first").focus();
+        jQuery(".wysiwyg-sp-metatag-popup *:input[type!=hidden]:first").focus();
       });
     },
 
@@ -162,6 +162,7 @@
      */
     _getImgPlaceholder: function (settings) {
       return settings.icon_markup['prefix'] +
+        // We store the data_id on the alt text of the image.
         settings.icon_markup['src'].replace('alt=""', 'alt="' +
         settings.data_id + '"') +
         settings.icon_markup['suffix'];
@@ -175,7 +176,7 @@
       metatags["data_id"] = settings.data_id;
 
       // Get values from the form. Only get values from input type: text, textarea
-      jQuery('.wysiwyg-sp-seo-popup *').filter('input[type=text],textarea').each(function(key, value) {
+      jQuery('.wysiwyg-sp-metatag-popup *').filter('input[type=text],textarea').each(function(key, value) {
 
         // Ignore fields that were not normalized when building the form, they wil have [] symbols.
         if (this.name.indexOf("[") == -1 && this.name.indexOf("]") == -1) {
@@ -190,7 +191,7 @@
   };
 
   // Storage.
-  Drupal.wysiwyg.plugins['wysiwyg_smart_paging_seo'].data = {};
+  Drupal.wysiwyg.plugins['smart_paging_metatag'].data = {};
   
 })(jQuery);
 
