@@ -40,7 +40,7 @@ function wysiwyg_smart_paging_seo_form() {
     '#name' => 'url',
     '#title' => 'Fragment URL',
     '#size' => 100,
-    '#weight' => 20,
+    '#weight' => 99,
     '#description' => t('A Fragment URL specifies a location within a page. i.e. http://example.com/help#main'),
   );
 
