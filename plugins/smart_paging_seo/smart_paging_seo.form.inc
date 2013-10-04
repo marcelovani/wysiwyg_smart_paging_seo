@@ -70,7 +70,7 @@ function wysiwyg_smart_paging_seo_wysiwyg_smart_paging_seo_form_alter(&$form) {
 /**
  * Implements hook_form().
  */
-function _wysiwyg_smart_paging_metatag_form() { //@todo move to metatag plugin
+function _wysiwyg_smart_paging_metatag_form() {
   $tags = array(
     'global' => array(
       'title', 'description', 'abstract', 'keywords',
