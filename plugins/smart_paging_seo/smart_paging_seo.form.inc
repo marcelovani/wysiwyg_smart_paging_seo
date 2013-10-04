@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Wysiwyg Metatag form.
+ * Implement Wysiwyg SEO form.
  */
 
 /**
- * Helper that returns metatags form or a custom form.
+ * Helper that returns urls form or a custom form.
  */
-function wysiwyg_smart_paging_metatag_form() {
+function wysiwyg_smart_paging_seo_form() {
   $form = array();
   if (module_exists('metatag')) {
     module_load_include('inc', 'metatag', 'metatag.admin');
@@ -27,8 +27,16 @@ function wysiwyg_smart_paging_metatag_form() {
   }
 
   // Modify the form.
-  $form['#prefix'] = '<div class="wysiwyg-sp-metatag-popup">' . '<h2>Edit Metatag</h2>';
+  $form['#prefix'] = '<div class="wysiwyg-sp-seo-popup">' . '<h2>Smart Paging SEO</h2>';
   $form['#suffix'] = '</div>';
+
+  $form['url'] = array(
+    '#type' => 'textfield',
+    '#name' => 'url',
+    '#title' => 'Fragment URL',
+    '#size' => 60,
+    '#description' => t('A Fragment URL specifies a location within a page. i.e. http://example.com/help#main'),
+  );
 
   $form['actions'] = array('#weight' => 100);
   $form['actions']['insert'] = array(
@@ -47,15 +55,15 @@ function wysiwyg_smart_paging_metatag_form() {
   );
 
   // Allow other modules to alter this form.
-  drupal_alter('wysiwyg_smart_paging_metatag_form', $form);
+  drupal_alter('wysiwyg_smart_paging_seo_form', $form);
 
   return $form;
 }
 
 /**
- * Implements hook_wysiwyg_smart_paging_metatag_form_alter().
+ * Implements hook_wysiwyg_smart_paging_seo_form_alter().
  */
-function wysiwyg_smart_paging_seo_wysiwyg_smart_paging_metatag_form_alter(&$form) {
+function wysiwyg_smart_paging_seo_wysiwyg_smart_paging_seo_form_alter(&$form) {
   // Alter the form here.
 }
 

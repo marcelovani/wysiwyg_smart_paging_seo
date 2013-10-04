@@ -1,9 +1,10 @@
-Module: Wysiwyg Smart Paging
+Module: Wysiwyg Smart Paging SEO
 
 Description
 ===========
-The Wysiwyg Smart Paging module provides UI for multi-page metatags.
-Compatible with: Metatags module.
+Provides the UI for multi-page metatags.
+
+Compatible with: Metatags, Tokens
 
 Installation
 ============
@@ -18,4 +19,10 @@ or via menus: Configuration > Content Authoring > Wysiwyg profiles
 Edit the configuration for each Input format, i.e. Filtered HTML
 /admin/config/content/wysiwyg/profile/filtered_html/edit
 
-Tick the option: Wysiwyg Smart Paging
+Tick the option: Wysiwyg Smart Paging1
+
+Documentation
+=============
+See https://drupal.org/node/2102843
+
+
