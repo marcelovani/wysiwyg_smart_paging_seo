@@ -10,6 +10,7 @@
  */
 function wysiwyg_smart_paging_seo_form() {
   $form = array();
+
   if (module_exists('metatag')) {
     module_load_include('inc', 'metatag', 'metatag.admin');
     drupal_add_css(drupal_get_path('module', 'metatag') . '/metatag.admin.css');
@@ -26,15 +27,20 @@ function wysiwyg_smart_paging_seo_form() {
     $form = drupal_get_form('_wysiwyg_smart_paging_metatag_form');
   }
 
+  $description = t('Add custom meta tags for this page by using the form below.<br />
+      If you just want a page break and do not want to add custom meta tags, simply press Insert.<br />
+      Cancel takes you back and does not add a pagebreak as well.');
+
   // Modify the form.
-  $form['#prefix'] = '<div class="wysiwyg-sp-seo-popup">' . '<h2>Smart Paging SEO</h2>';
+  $form['#prefix'] = '<div class="wysiwyg-sp-seo-popup">' . '<h2>Smart Paging SEO</h2>' . $description;
   $form['#suffix'] = '</div>';
 
   $form['url'] = array(
     '#type' => 'textfield',
     '#name' => 'url',
     '#title' => 'Fragment URL',
-    '#size' => 60,
+    '#size' => 100,
+    '#weight' => 20,
     '#description' => t('A Fragment URL specifies a location within a page. i.e. http://example.com/help#main'),
   );
 
@@ -104,8 +110,7 @@ function _wysiwyg_smart_paging_metatag_form() {
         '#type' => 'textfield',
         '#name' => 'meta_name_' . $tag . '_content',
         '#title' => ucfirst($tag),
-        '#size' => 60,
-        //'#attributes' => array('class' => 'fluid'),
+        '#size' => 100,
       );
     }
     $weight++;
