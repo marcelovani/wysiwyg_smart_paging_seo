@@ -32,7 +32,7 @@
         invoke: function(data, settings, instanceId) {
             // Display the Add form.
             if (data.content == "") {
-                settings.data_id = new Date().getTime();
+                settings.data_id = this._getId();
                 settings.placeholder = this._getImgPlaceholder(settings);
                 settings.mode = "Add";
             }
@@ -59,11 +59,10 @@
             	    var comment = comments[i];
             	    if (comment.nodeValue == 'pagebreak') {
             	        var d = {};
-            	        
+                        // build a string to replace with the image.
+                        var replace = '<!--pagebreak-->';
             	        // Are there siblings?
             	        if (comment.nextSibling) {
-            	            // build a string to replace with the image.
-            	            var replace = '<!--pagebreak-->';
             	            // Is there a smartpaging sibling?
             	            var sibling = comment.nextSibling;
             	            while (sibling) {
@@ -78,37 +77,33 @@
                                               d = JSON.parse(json_str);
                                               var data_id = d.data_id;
                                           } catch (e) {}
-                                        } else {
+                                          replace = replace + '<!--' + sibling.nodeValue + '-->';
+                                        }
+                                        else if (sibling.nodeValue.substr(0, 14) == 'smartpagingurl') {
                                           // A smartpagingurl simply stores a string.
                                           // Store the url.
                                           var url = sibling.nodeValue.substr(16, sibling.nodeValue.length - 17);
                                           d.url = url;
+                                          replace = replace + '<!--' + sibling.nodeValue + '-->';
+                                          break;
                                         }
-            	                        replace = replace + '<!--' + sibling.nodeValue + '-->';
-            	                        
             	                    }
             	                }
             	                sibling = sibling.nextSibling;
-            	            } 
+            	            }
+                        }
+                            // Backwards compatibility for <!--pagebreak--> without <!--smartpagingmeta, <!--smartpagingurl tags.
+                            if (typeof d.data_id == 'undefined') {
+                              data_id = this._getId();
+                              d.data_id = data_id;
+                            }
             	            this.storage[data_id] = d;
             	            settings.data_id = data_id;
             	            content = content.replace(replace, this._getImgPlaceholder(settings));
-            	        }
+            	       // }
             	    }
             	}
-            	
-            	// Clean up remaining smartpaging/pagebreak tags.
-            	for (var i = 0; i < comments.length; i++) {
-            	    var comment = comments[i];
-            	    if (comment.nodeValue == 'pagebreak') {
-            	        content = content.replace('<!--pagebreak-->', this._getImgPlaceholder(settings));
-            	    } else if (comment.nodeValue.substr(0, 11) == 'smartpaging') {
-            	        content = content.replace('<!--' + comment.nodeValue + '-->', '');
-            	    }
-            	}
-            	
             }
-
             return content;
         },
 
@@ -126,7 +121,12 @@
 
                     // Generate markup using data from storage.
                     var data = this.storage[settings.data_id];
-                    var url = data.url;
+                    if (typeof data.url != 'undefined') {
+                        var url = data.url;
+                    }
+                    else {
+                        var url = "";
+                    }
                     var metatag_markup = JSON.stringify(data);
 
                     // Replace image with markup.
@@ -222,12 +222,20 @@
                 // Ignore fields that were not normalized when building the form, they wil have [] symbols.
                 if (this.name.indexOf("[") == -1 && this.name.indexOf("]") == -1) {
                     // Only override tags that contain values.
-                    if (this.value != "") {
+                    if (this.value != "" && typeof this.value != 'undefined' && this.value != 'undefined') {
                         values[this.name] = this.value;
                     }
                 }
             });
             return values;
+        },
+
+        /**
+         * Helper to get new Id.
+         */
+        _getId: function() {
+          var id = new Date().getTime() + Math.floor((Math.random()*1000)+1);
+          return id;
         },
     };
 
