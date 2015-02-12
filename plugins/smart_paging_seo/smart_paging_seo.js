@@ -158,6 +158,8 @@
                 var values = Drupal.wysiwyg.plugins['smart_paging_seo'].storage[settings.data_id];
                 if (typeof values == "object") {
                   jQuery.each(values, function(name, value) {
+                    // Escape special characters to ensure jQuery Update compatibility.
+                    name = name.replace(/(:|\.|\[|\]|,)/g, "\\$1");
                     jQuery('.wysiwyg-sp-seo-popup [name=' + name + ']').val(value);
                   });
                 }
