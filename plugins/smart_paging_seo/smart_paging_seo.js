@@ -112,7 +112,7 @@
          */
         detach: function(content, settings, instanceId) {
             // Find all Images and extract the ids.
-            var regexp = new RegExp('<img[^>]*?class="wysiwyg-sp-seo-img"[^>]*?alt="(\\d+)"[^>]/>', 'gi');
+            var regexp = new RegExp('<img[^>]*?class="wysiwyg-sp-seo-img"[^>]*?alt="(\\d+)"[^>]*>', 'gi');
             var data_id_array = content.match(regexp);
             if (data_id_array != null) {
                 for (var i = 0; i < data_id_array.length; i++) {
